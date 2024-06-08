@@ -72,3 +72,22 @@ ggplot(soil_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme(text = element_text(size = 18))
 ggsave(paste(github_dir,'/figures/TEST2_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
+###Isolate soil signature
+cal<-subset(dataset, type %in% c('CAL1','CAL2','CAL3'))
+cal_mean_std <- cal %>%
+  group_by(wavelength,type) %>%
+  summarise_at(vars(reflectance), list(mean=mean, sd=sd)) %>%
+  as.data.frame()
+
+ggplot(cal_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
+  geom_line(show.legend = T,linewidth=.5,linetype="solid") +
+  scale_color_manual(values=c('lightgrey','darkgrey','black'))+
+  geom_ribbon(aes(y = mean, ymin = mean - sd, ymax = mean + sd, fill = type), alpha = .5) +
+  scale_fill_manual(values=c('lightgrey','darkgrey','black'))+
+  scale_y_continuous("Reflectance") +
+  scale_x_continuous("Wavelength (nm)",limits = c(400,2400), breaks = seq(400,2400,200)) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
+  theme(text = element_text(size = 18))
+ggsave(paste(github_dir,'/figures/TEST2_Full_Calibration.png',sep=''),dpi=300,width=180,height=120,units='mm')
+
