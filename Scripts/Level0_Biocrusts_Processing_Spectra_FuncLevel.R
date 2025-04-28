@@ -92,6 +92,14 @@ ggplot(cal_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme(text = element_text(size = 18))
 ggsave(paste(github_dir,'/figures/TEST2_Full_Calibration.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
+#write csv file
+cal_mean <- cal %>%
+  group_by(wavelength,type) %>%
+  summarise_at(vars(reflectance), list(mean)) %>%
+  as.data.frame()
+cal_wide<- cal_mean %>% pivot_wider(names_from = type, values_from = reflectance) #samples as columns
+write.csv(cal_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level1/Calibration_Rep1_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
+
 ###Isolate calibration panel rep2 signature
 cal<-subset(dataset, type %in% c('CAL1_REP2','CAL2_REP2','CAL3_REP2'))
 cal_mean_std <- cal %>%
@@ -110,6 +118,10 @@ ggplot(cal_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
 ggsave(paste(github_dir,'/figures/TEST2_Full_Calibration_REP2.png',sep=''),dpi=300,width=180,height=120,units='mm')
+
+#write csv file
+cal_wide<- cal %>% pivot_wider(names_from = type, values_from = reflectance) #samples as columns
+write.csv(cal_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level1/Calibration_Rep2_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
 
 #####################################SandFlats#######################################
 master <- read.csv2(paste(github_dir,'Data/NASA_EMIT_Campaign_062024/Level0/Data_Sheets/Biocrust/Datasheet_Biocrust_SF_06102024.csv',sep=''),sep=',',header=T)
