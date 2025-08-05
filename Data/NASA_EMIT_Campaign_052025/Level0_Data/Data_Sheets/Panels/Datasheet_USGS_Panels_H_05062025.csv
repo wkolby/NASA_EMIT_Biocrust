@@ -1,0 +1,23 @@
+﻿Dir,Panel,File,Sample ,Rep
+USGS_ASD_Panel,White,1,1,1
+USGS_ASD_Panel,Grey,2,2,1
+USGS_ASD_Panel,Black,3,3,1
+USGS_ASD_Panel,Solar,4,4,1
+USGS_ASD_Panel,White,5,5,1
+USGS_ASD_Panel,White,6,5,2
+USGS_ASD_Panel,White,7,5,3
+USGS_ASD_Panel,Grey,8,6,1
+USGS_ASD_Panel,Grey,9,6,2
+USGS_ASD_Panel,Grey,10,6,3
+USGS_ASD_Panel,Black,11,7,1
+USGS_ASD_Panel,Black,12,7,2
+USGS_ASD_Panel,Black,13,7,3
+USGS_ASD_Panel,White,14,8,1
+USGS_ASD_Panel,White,15,8,2
+USGS_ASD_Panel,White,16,8,3
+USGS_ASD_Panel,Grey,17,9,1
+USGS_ASD_Panel,Grey,18,9,2
+USGS_ASD_Panel,Grey,19,9,3
+USGS_ASD_Panel,Black,20,10,1
+USGS_ASD_Panel,Black,21,10,2
+USGS_ASD_Panel,Black,22,10,3
