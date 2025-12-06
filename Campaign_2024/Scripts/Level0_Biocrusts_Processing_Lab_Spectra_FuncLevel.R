@@ -27,21 +27,22 @@ calc_VI <- function(df, a, b, c, d){
 }
 
 #####################################Lab Spectra#######################################
-master <- read.csv2(paste(github_dir,'Data/NASA_EMIT_Campaign_052025/Level0_Lab_Data/Data_Sheets/EMIT_metadata_hyperspec_campaign2025.csv',sep=''),sep=',',header=T)
+master <- read.csv2(paste(github_dir,'Campaign_2024/Data/Level0_Lab_Data/Data_Sheets/EMIT_metadata_hyperspec_campaign2024.csv',sep=''),sep=',',header=T)
 master$spectrum..<-str_pad(master$spectrum.., 5, pad = "0")
 
 
-###Horse Thief###
-#sites=c('HorseThief')
-#covers=c('M','LC','DC','B','L','Lnf')
+###Sand Flats###
+#sites=c('SF')
+#covers=c('bare','lichen','dcy','lcy')
 
-###Salt VAlley###
-#sites=c('SaltValley')
-#covers=c('M','LC','B','L')
+#sites=c('IC1')
+#covers=c('moss','bare','dcy','lcy')
 
-###Panorama###
-sites=c('Panorama')
-covers=c('M','LC','B')
+#sites=c('IC2')
+#covers=c('moss','bare','dcy','lcy')
+
+sites=c('IC3')
+covers=c('bare','dcy','lcy')
 
 ###ALL###
 treats=c('dry','wet')
@@ -52,7 +53,7 @@ for(m in 1:length(sites)){
       dataset <- data.frame()
       msub <- subset(master,site == sites[m] & treatment == treats[j] & cover.type == covers[k])
       for(i in 1:length(msub$spectrum..)){
-        file <- list.files(paste(github_dir,'/Data/NASA_EMIT_Campaign_052025/Level0_Lab_Data/Spectra/',sep=''), full.names = T, pattern = paste(msub$spectrum..[i],".asd",sep=''))
+        file <- list.files(paste(github_dir,'Campaign_2024/Data/Level0_Lab_Data/Spectra/',sep=''), full.names = T, pattern = paste(msub$spectrum..[i],".asd",sep=''))
         print(file)
         md<-get_metadata(file)
         temp_data<-get_spectra(file)
@@ -63,19 +64,18 @@ for(m in 1:length(sites)){
         data_c=c(data[1:which(wvl==1000)]+c1,data[which(wvl==1001):which(wvl==1800)],data[which(wvl==1801):which(wvl==2500)]+c2)
         data_s=data_c/sqrt(sum(data_c^2))
         site=rep(msub$site,length(wvl))
-        fgroup=rep(msub$functional.group[i],length(wvl))
         ctype=rep(msub$cover.type[i],length(wvl))
         treat=rep(msub$treatment[i],length(wvl))
         rep=rep(msub$rep[i],length(wvl))
         sample=rep(msub$sample[i],length(wvl))
         
-        ds=cbind(site,wvl,data_c,fgroup,ctype,treat,sample,rep)
+        ds=cbind(site,wvl,data_c,ctype,treat,sample,rep)
         dataset <- rbind(dataset,ds)
       }
     
     
       #Name the columns
-      colnames(dataset) <- c("site","wavelength","reflectance","fgroup","ctype","treat","sample","rep")
+      colnames(dataset) <- c("site","wavelength","reflectance","ctype","treat","sample","rep")
       dataset=transform(dataset,wavelength = as.numeric(wavelength))
       dataset=transform(dataset,reflectance = as.numeric(reflectance))
       dataset=transform(dataset,rep = as.numeric(rep))
@@ -91,12 +91,12 @@ for(m in 1:length(sites)){
         theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
         theme(text = element_text(size = 18))
-      ggsave(paste(github_dir,'/figures/Species/LabSpectra_',sites[m],'_',covers[k],'_',treats[j],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
+      ggsave(paste(github_dir,'Campaign_2024/Figures/Level0_Lab_Figures/LabSpectra_',sites[m],'_',covers[k],'_',treats[j],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
       
       #write csv file
       dataset_rep_mean <- dataset %>% group_by(wavelength,sample) %>% summarise_at(vars(reflectance), list(reflectance=mean)) %>% as.data.frame()
       dataset_wide<- dataset_rep_mean %>% pivot_wider(names_from = sample, values_from = reflectance) #samples as columns
-      write.csv(dataset_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_052025/Level1_Lab_Data/',sites[m],'_',covers[k],'_',treats[j],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
+      write.csv(dataset_wide,paste(github_dir,'Campaign_2024/Data/Level1_Lab_Data/',sites[m],'_',covers[k],'_',treats[j],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
     
     }
   }

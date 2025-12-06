@@ -27,12 +27,12 @@ calc_VI <- function(df, a, b, c, d){
 }
 
 #####################################TEST#######################################
-master <- read.csv2(paste(github_dir,'Data/NASA_EMIT_Campaign_062024/Level0/Data_Sheets/TEST/Datasheet_Test2_06052024.csv',sep=''),sep=',',header=T)
+master <- read.csv2(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/Data_Sheets/TEST/Datasheet_Test2_06052024.csv',sep=''),sep=',',header=T)
 master$File<-str_pad(master$File, 5, pad = "0")
 dataset <- data.frame()
 
 for(i in 1:length(master$File)){
-  file <- list.files(paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level0/TEST2',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
+  file <- list.files(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/TEST2',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
   print(file)
   md<-get_metadata(file)
   temp_data<-get_spectra(file)
@@ -72,7 +72,7 @@ ggplot(soil_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/TEST2_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level0_Test_Figures/TEST2_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
 ###Isolate calibration panel rep1 signature
 cal<-subset(dataset, type %in% c('CAL1','CAL2','CAL3'))
@@ -91,7 +91,7 @@ ggplot(cal_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/TEST2_Full_Calibration.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level0_Cal_Figures/TEST2_Full_Calibration_REP1.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
 #write csv file
 cal_mean <- cal %>%
@@ -99,7 +99,7 @@ cal_mean <- cal %>%
   summarise_at(vars(reflectance), list(mean)) %>%
   as.data.frame()
 cal_wide<- cal_mean %>% pivot_wider(names_from = type, values_from = reflectance) #samples as columns
-write.csv(cal_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level1/Field/Calibration_Rep1_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
+write.csv(cal_wide,paste(github_dir,'Campaign_2024/Data/Level1_Field_Data/Calibration_Rep1_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
 
 ###Isolate calibration panel rep2 signature
 cal<-subset(dataset, type %in% c('CAL1_REP2','CAL2_REP2','CAL3_REP2'))
@@ -118,19 +118,19 @@ ggplot(cal_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/TEST2_Full_Calibration_REP2.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level0_Cal_Figures/TEST2_Full_Calibration_REP2.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
 #write csv file
 cal_wide<- cal %>% pivot_wider(names_from = type, values_from = reflectance) #samples as columns
-write.csv(cal_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level1/Field/Calibration_Rep2_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
+write.csv(cal_wide,paste(github_dir,'Campaign_2024/Data/Level1_Field_Data/Calibration_Rep2_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
 
 #####################################Sand Flats#######################################
-master <- read.csv2(paste(github_dir,'Data/NASA_EMIT_Campaign_062024/Level0/Data_Sheets/Biocrust/Datasheet_Biocrust_SF_06102024.csv',sep=''),sep=',',header=T)
+master <- read.csv2(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/Data_Sheets/Biocrust/Datasheet_Biocrust_SF_06102024.csv',sep=''),sep=',',header=T)
 master$File<-str_pad(master$File, 5, pad = "0")
 dataset <- data.frame()
 
 for(i in 1:length(master$File)){
-  file <- list.files(paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level0/SF_soil',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
+  file <- list.files(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/SF_soil',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
   print(file)
   md<-get_metadata(file)
   temp_data<-get_spectra(file)
@@ -168,12 +168,12 @@ for(i in 1:length(species)){
     theme_bw() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     theme(text = element_text(size = 18))
-  ggsave(paste(github_dir,'/figures/Species/SF_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
+  ggsave(paste(github_dir,'Campaign_2024/Figures/Level0_Field_Figures/SF_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
   
   #write csv file
   dataset_rep_mean <- subset(dataset, type %in% species[i]) %>% group_by(wavelength,sample) %>% summarise_at(vars(reflectance), list(reflectance=mean)) %>% as.data.frame()
   dataset_wide<- dataset_rep_mean %>% pivot_wider(names_from = sample, values_from = reflectance) #samples as columns
-  write.csv(dataset_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level1/Field/SF_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
+  write.csv(dataset_wide,paste(github_dir,'Campaign_2024/Data/Level1_Field_Data/SF_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
 }
 
 ###Species level plots (mean +/- sd)###
@@ -194,7 +194,7 @@ ggplot(soil_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/SF_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level1_Field_Figures/SF_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
 #rock biocrusts
 rock<-subset(dataset, type %in% c('Rock_MOSS','Rock_LCHk','Rock_LCHg','Rock_LCHy','Rock_LCHb'))
@@ -214,7 +214,7 @@ ggplot(rock_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/SF_Full_Rock_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level1_Field_Figures/SF_Full_Rock_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
 #soil biocrusts
 biocrust<-subset(dataset, type %in% c('BGR','LCY','DCY','COTE','SQUA'))
@@ -234,18 +234,15 @@ ggplot(biocrust_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/SF_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
-
-#Across site
-biocrust_sf<-biocrust
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level1_Field_Figures/SF_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
 #####################################IC2#######################################
-master <- read.csv2(paste(github_dir,'Data/NASA_EMIT_Campaign_062024/Level0/Data_Sheets/Biocrust/Datasheet_Biocrust_IC2_06062024.csv',sep=''),sep=',',header=T)
+master <- read.csv2(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/Data_Sheets/Biocrust/Datasheet_Biocrust_IC2_06062024.csv',sep=''),sep=',',header=T)
 master$File<-str_pad(master$File, 5, pad = "0")
 dataset <- data.frame()
 
 for(i in 1:length(master$File)){
-  file <- list.files(paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level0/IC2_soil',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
+  file <- list.files(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/IC2_soil',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
   print(file)
   md<-get_metadata(file)
   temp_data<-get_spectra(file)
@@ -283,12 +280,12 @@ for(i in 1:length(species)){
     theme_bw() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     theme(text = element_text(size = 18))
-  ggsave(paste(github_dir,'/figures/Species/IC2_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
+  ggsave(paste(github_dir,'Campaign_2024/Figures/Level0_Field_Figures/IC2_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
   
   #write csv file
   dataset_rep_mean <- subset(dataset, type %in% species[i]) %>% group_by(wavelength,sample) %>% summarise_at(vars(reflectance), list(reflectance=mean)) %>% as.data.frame()
   dataset_wide<- dataset_rep_mean %>% pivot_wider(names_from = sample, values_from = reflectance) #samples as columns
-  write.csv(dataset_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level1/Field/IC2_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
+  write.csv(dataset_wide,paste(github_dir,'Campaign_2024/Data/Level1_Field_Data/IC2_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
 }
 
 ###Species level plots (mean +/- sd)###
@@ -309,7 +306,7 @@ ggplot(soil_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/IC2_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level1_Field_Figures/IC2_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
 #soil biocrust
 biocrust<-subset(dataset, type %in% c('BGR','LCY','DCY','MOSS'))
@@ -329,18 +326,16 @@ ggplot(biocrust_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/IC2_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level1_Field_Figures/IC2_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
-#Across site
-biocrust_ic2<-biocrust
 
 #####################################IC1#######################################
-master <- read.csv2(paste(github_dir,'Data/NASA_EMIT_Campaign_062024/Level0/Data_Sheets/Biocrust/Datasheet_Biocrust_IC1_06072024.csv',sep=''),sep=',',header=T)
+master <- read.csv2(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/Data_Sheets/Biocrust/Datasheet_Biocrust_IC1_06072024.csv',sep=''),sep=',',header=T)
 master$File<-str_pad(master$File, 5, pad = "0")
 dataset <- data.frame()
 
 for(i in 1:length(master$File)){
-  file <- list.files(paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level0/IC1_soil',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
+  file <- list.files(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/IC1_soil',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
   print(file)
   md<-get_metadata(file)
   temp_data<-get_spectra(file)
@@ -378,12 +373,12 @@ for(i in 1:length(species)){
     theme_bw() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     theme(text = element_text(size = 18))
-  ggsave(paste(github_dir,'/figures/Species/IC1_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
+  ggsave(paste(github_dir,'Campaign_2024/Figures/Level0_Field_Figures/IC1_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
   
   #write csv file
   dataset_rep_mean <- subset(dataset, type %in% species[i]) %>% group_by(wavelength,sample) %>% summarise_at(vars(reflectance), list(reflectance=mean)) %>% as.data.frame()
   dataset_wide<- dataset_rep_mean %>% pivot_wider(names_from = sample, values_from = reflectance) #samples as columns
-  write.csv(dataset_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level1/Field/IC1_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
+  write.csv(dataset_wide,paste(github_dir,'Campaign_2024/Data/Level1_Field_Data/IC1_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
 }
 
 ###Species level plots (mean +/- sd)###
@@ -404,7 +399,7 @@ ggplot(soil_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/IC1_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level1_Field_Figures/IC1_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
 #soil biocrust
 biocrust<-subset(dataset, type %in% c('BGR','LCY','DCY','MOSS'))
@@ -424,18 +419,16 @@ ggplot(biocrust_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/IC1_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level1_Field_Figures/IC1_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
-#Across site
-biocrust_ic1<-biocrust
 
 #####################################IC3#######################################
-master <- read.csv2(paste(github_dir,'Data/NASA_EMIT_Campaign_062024/Level0/Data_Sheets/Biocrust/Datasheet_Biocrust_IC3_06082024.csv',sep=''),sep=',',header=T)
+master <- read.csv2(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/Data_Sheets/Biocrust/Datasheet_Biocrust_IC3_06082024.csv',sep=''),sep=',',header=T)
 master$File<-str_pad(master$File, 5, pad = "0")
 dataset <- data.frame()
 
 for(i in 1:length(master$File)){
-  file <- list.files(paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level0/IC3_soil',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
+  file <- list.files(paste(github_dir,'Campaign_2024/Data/Level0_Field_Data/IC3_soil',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
   print(file)
   md<-get_metadata(file)
   temp_data<-get_spectra(file)
@@ -473,12 +466,12 @@ for(i in 1:length(species)){
     theme_bw() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     theme(text = element_text(size = 18))
-  ggsave(paste(github_dir,'/figures/Species/IC3_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
+  ggsave(paste(github_dir,'Campaign_2024/Figures/Level0_Field_Figures/IC3_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
   
   #write csv file
   dataset_rep_mean <- subset(dataset, type %in% species[i]) %>% group_by(wavelength,sample) %>% summarise_at(vars(reflectance), list(reflectance=mean)) %>% as.data.frame()
   dataset_wide<- dataset_rep_mean %>% pivot_wider(names_from = sample, values_from = reflectance) #samples as columns
-  write.csv(dataset_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_062024/Level1/Field/IC3_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
+  write.csv(dataset_wide,paste(github_dir,'Campaign_2024/Data/Level1_Field_Data/IC3_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
 }
 
 ###Species level plots (mean +/- sd)###
@@ -499,7 +492,7 @@ ggplot(soil_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/IC3_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level1_Field_Figures/IC3_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
 
 #soil biocrust
 biocrust<-subset(dataset, type %in% c('BGR','LCY','DCY'))
@@ -519,236 +512,4 @@ ggplot(biocrust_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
   theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/IC3_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
-
-#Across site
-biocrust_ic3<-biocrust
-
-#####################################Horse Thief#######################################
-master <- read.csv2(paste(github_dir,'Data/NASA_EMIT_Campaign_052025/Level0_Field_Data/Data_Sheets/Biocrust/Datasheet_Biocrust_H_05062025.csv',sep=''),sep=',',header=T)
-master$File<-str_pad(master$File, 5, pad = "0")
-dataset <- data.frame()
-
-for(i in 1:length(master$File)){
-  file <- list.files(paste(github_dir,'/Data/NASA_EMIT_Campaign_052025/Level0_Field_Data/HorseThief/Biocrust/',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
-  print(file)
-  md<-get_metadata(file)
-  temp_data<-get_spectra(file)
-  data<-as.numeric(temp_data)
-  wvl=as.integer(colnames(temp_data))
-  c1=data[which(wvl==1001)]-data[which(wvl==1000)]
-  c2=data[which(wvl==1800)]-data[which(wvl==1801)]
-  data_c=c(data[1:which(wvl==1000)]+c1,data[which(wvl==1001):which(wvl==1800)],data[which(wvl==1801):which(wvl==2500)]+c2)
-  data_s=data_c/sqrt(sum(data_c^2))
-  site=rep("HT",length(wvl))
-  type=rep(master$Biocrust[i],length(wvl))
-  rep=rep(master$Rep[i],length(wvl))
-  sample=rep(master$Sample[i],length(wvl))
-  
-  ds=cbind(site,wvl,data_c,type,sample,rep)
-  dataset <- rbind(dataset,ds)
-}
-
-#Name the columns
-colnames(dataset) <- c("site","wavelength","reflectance","type","sample","rep")
-dataset=transform(dataset,wavelength = as.numeric(wavelength))
-dataset=transform(dataset,reflectance = as.numeric(reflectance))
-dataset=transform(dataset,rep = as.numeric(rep))
-dataset=transform(dataset,sample = as.numeric(sample))
-
-#####ASD Reflectance Plots#################
-###Species level plots (all samples)###
-species<-c('BGR','LCY','DCY','LCNy','COTE','MOSS')
-for(i in 1:length(species)){
-  ggplot(subset(dataset, type %in% species[i]), aes(x=wavelength,y=reflectance, group=rep, color=rep)) +
-    geom_line(show.legend = T,linewidth=.5,linetype="solid") +
-    facet_wrap(~sample)+
-    scale_y_continuous("Reflectance") +
-    scale_x_continuous("Wavelength (nm)",limits = c(400,2400), breaks = seq(400,2400,400)) +
-    theme_bw() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-    theme(text = element_text(size = 18))
-  ggsave(paste(github_dir,'/Figures/Species/HorseThief_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
-  
-  #write csv file
-  dataset_rep_mean <- subset(dataset, type %in% species[i]) %>% group_by(wavelength,sample) %>% summarise_at(vars(reflectance), list(reflectance=mean)) %>% as.data.frame()
-  dataset_wide<- dataset_rep_mean %>% pivot_wider(names_from = sample, values_from = reflectance) #samples as columns
-  write.csv(dataset_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_052025/Level1/Field/HorseThief_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
-}
-
-###Species level plots (mean +/- sd)###
-#lcy vs soil
-soil<-subset(dataset, type %in% c('LCY','BGR'))
-soil_mean_std <- soil %>%
-  group_by(wavelength,type) %>%
-  summarise_at(vars(reflectance), list(mean=mean, sd=sd)) %>%
-  as.data.frame()
-
-ggplot(soil_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
-  geom_line(show.legend = T,linewidth=.5,linetype="solid") +
-  #scale_color_manual(values=c('red3','green3','cyan2','purple'))+
-  geom_ribbon(aes(y = mean, ymin = mean - sd, ymax = mean + sd, fill = type), alpha = .2) +
-  #scale_fill_manual(values=c('red3','green3','cyan2','purple'))+
-  scale_y_continuous("Reflectance") +
-  scale_x_continuous("Wavelength (nm)",limits = c(400,2400), breaks = seq(400,2400,200)) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-  theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/HorseThief_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
-
-#soil biocrust
-biocrust<-subset(dataset, type %in% c('BGR','LCY','DCY','LCNy','COTE','MOSS'))
-biocrust_mean_std <- biocrust %>%
-  group_by(wavelength,type) %>%
-  summarise_at(vars(reflectance), list(mean=mean, sd=sd)) %>%
-  as.data.frame()
-
-biocrust_mean_std$type <- factor(biocrust_mean_std$type,levels=c('BGR','LCY','DCY','LCNy','COTE','MOSS')) #Set the order for manual fill
-ggplot(biocrust_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
-  geom_line(show.legend = T,linewidth=.5,linetype="solid") +
-  scale_color_manual(values=c('sandybrown','red2','red4','yellow3','blue2','green4'))+
-  geom_ribbon(aes(y = mean, ymin = mean - sd, ymax = mean + sd, fill = type), alpha = .2) +
-  scale_fill_manual(values=c('sandybrown','red2','red4','yellow3','blue2','green4'))+
-  scale_y_continuous("Reflectance") +
-  scale_x_continuous("Wavelength (nm)",limits = c(350,2500), breaks = seq(300,2500,200)) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-  theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/HorseThief_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
-
-#Across site
-biocrust_ht<-biocrust
-
-#####################################Salt Valley#######################################
-master <- read.csv2(paste(github_dir,'Data/NASA_EMIT_Campaign_052025/Level0_Field_Data/Data_Sheets/Biocrust/Datasheet_Biocrust_S_05062025.csv',sep=''),sep=',',header=T)
-master$File<-str_pad(master$File, 5, pad = "0")
-dataset <- data.frame()
-
-for(i in 1:length(master$File)){
-  file <- list.files(paste(github_dir,'/Data/NASA_EMIT_Campaign_052025/Level0_Field_Data/SaltValley/Biocrust/',sep=''), full.names = T, pattern = paste(master$File[i],".asd",sep=''))
-  print(file)
-  md<-get_metadata(file)
-  temp_data<-get_spectra(file)
-  data<-as.numeric(temp_data)
-  wvl=as.integer(colnames(temp_data))
-  c1=data[which(wvl==1001)]-data[which(wvl==1000)]
-  c2=data[which(wvl==1800)]-data[which(wvl==1801)]
-  data_c=c(data[1:which(wvl==1000)]+c1,data[which(wvl==1001):which(wvl==1800)],data[which(wvl==1801):which(wvl==2500)]+c2)
-  data_s=data_c/sqrt(sum(data_c^2))
-  site=rep("SV",length(wvl))
-  type=rep(master$Biocrust[i],length(wvl))
-  rep=rep(master$Rep[i],length(wvl))
-  sample=rep(master$Sample[i],length(wvl))
-  
-  ds=cbind(site,wvl,data_c,type,sample,rep)
-  dataset <- rbind(dataset,ds)
-}
-
-#Name the columns
-colnames(dataset) <- c("site","wavelength","reflectance","type","sample","rep")
-dataset=transform(dataset,wavelength = as.numeric(wavelength))
-dataset=transform(dataset,reflectance = as.numeric(reflectance))
-dataset=transform(dataset,rep = as.numeric(rep))
-dataset=transform(dataset,sample = as.numeric(sample))
-
-#####ASD Reflectance Plots#################
-###Species level plots (all samples)###
-species<-c('BGR','LCY','MOSS','LCNy','LCNp')
-for(i in 1:length(species)){
-  ggplot(subset(dataset, type %in% species[i]), aes(x=wavelength,y=reflectance, group=rep, color=rep)) +
-    geom_line(show.legend = T,linewidth=.5,linetype="solid") +
-    facet_wrap(~sample)+
-    scale_y_continuous("Reflectance") +
-    scale_x_continuous("Wavelength (nm)",limits = c(400,2400), breaks = seq(400,2400,400)) +
-    theme_bw() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-    theme(text = element_text(size = 18))
-  ggsave(paste(github_dir,'/Figures/Species/SaltValley_',species[i],'_Biocrust.png',sep=''),dpi=300,width=180,height=120,units='mm')
-  
-  #write csv file
-  dataset_rep_mean <- subset(dataset, type %in% species[i]) %>% group_by(wavelength,sample) %>% summarise_at(vars(reflectance), list(reflectance=mean)) %>% as.data.frame()
-  dataset_wide<- dataset_rep_mean %>% pivot_wider(names_from = sample, values_from = reflectance) #samples as columns
-  write.csv(dataset_wide,paste(github_dir,'/Data/NASA_EMIT_Campaign_052025/Level1/Field/SaltValley_',species[i],'_Spectra.csv',sep=''),row.names=FALSE,col.names=TRUE)
-}
-
-###Species level plots (mean +/- sd)###
-#lcy vs soil
-soil<-subset(dataset, type %in% c('LCY','BGR'))
-soil_mean_std <- soil %>%
-  group_by(wavelength,type) %>%
-  summarise_at(vars(reflectance), list(mean=mean, sd=sd)) %>%
-  as.data.frame()
-
-ggplot(soil_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
-  geom_line(show.legend = T,linewidth=.5,linetype="solid") +
-  #scale_color_manual(values=c('red3','green3','cyan2','purple'))+
-  geom_ribbon(aes(y = mean, ymin = mean - sd, ymax = mean + sd, fill = type), alpha = .2) +
-  #scale_fill_manual(values=c('red3','green3','cyan2','purple'))+
-  scale_y_continuous("Reflectance") +
-  scale_x_continuous("Wavelength (nm)",limits = c(400,2400), breaks = seq(400,2400,200)) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-  theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/SaltValley_Full_Soil_LCY.png',sep=''),dpi=300,width=180,height=120,units='mm')
-
-#soil biocrust
-biocrust<-subset(dataset, type %in% c('BGR','LCY','MOSS','LCNy','LCNp'))
-biocrust_mean_std <- biocrust %>%
-  group_by(wavelength,type) %>%
-  summarise_at(vars(reflectance), list(mean=mean, sd=sd)) %>%
-  as.data.frame()
-
-biocrust_mean_std$type <- factor(biocrust_mean_std$type,levels=c('BGR','LCY','MOSS','LCNy','LCNp')) #Set the order for manual fill
-ggplot(biocrust_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
-  geom_line(show.legend = T,linewidth=.5,linetype="solid") +
-  scale_color_manual(values=c('sandybrown','red2','blue2','yellow4','pink2'))+
-  geom_ribbon(aes(y = mean, ymin = mean - sd, ymax = mean + sd, fill = type), alpha = .2) +
-  scale_fill_manual(values=c('sandybrown','red2','blue2','yellow4','pink2'))+
-  scale_y_continuous("Reflectance") +
-  scale_x_continuous("Wavelength (nm)",limits = c(350,2500), breaks = seq(300,2500,200)) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-  theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/SaltValley_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
-
-#Across site
-biocrust_sv<-biocrust
-
-#####################################ACROSS SITE#######################################
-all_sites<-rbind(biocrust_sf,biocrust_ic1,biocrust_ic2,biocrust_ic3,biocrust_ht,biocrust_sv)
-
-#soil biocrust
-all_sites<-subset(all_sites, type %in% c('BGR','LCY','DCY','LCNy','COTE','MOSS'))
-all_mean_std <- all_sites %>%
-  group_by(site,wavelength,type) %>%
-  summarise_at(vars(reflectance), list(mean=mean, sd=sd)) %>%
-  as.data.frame()
-
-all_mean_std$type <- factor(all_mean_std$type,levels=c('BGR','LCY','DCY','LCNy','COTE','MOSS')) #Set the order for manual fill
-ggplot(all_mean_std, aes(x=wavelength,y=mean,group=site,color=site)) +
-  geom_line(show.legend = T,linewidth=.5,linetype="solid") +
-  #scale_color_manual(values=c())+
-  geom_ribbon(aes(y = mean, ymin = mean - sd, ymax = mean + sd, fill = site), alpha = .2) +
-  #scale_fill_manual(values=c())+
-  facet_wrap(~type)+
-  scale_y_continuous("Reflectance") +
-  scale_x_continuous("Wavelength (nm)",limits = c(300,2500), breaks = seq(350,2450,500)) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-  theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/ALL_SITES_Full_Soil_Biocrusts_byType.png',sep=''),dpi=300,width=220,height=120,units='mm')
-
-all_mean_std$site <- factor(all_mean_std$site,levels=c('HT','SV','IC1','IC2','IC3','SF')) #Set the order for manual fill
-ggplot(all_mean_std, aes(x=wavelength,y=mean,group=type,color=type)) +
-  geom_line(show.legend = T,linewidth=.5,linetype="solid") +
-  #scale_color_manual(values=c('sandybrown','red2','red4','blue2','green4'))+
-  geom_ribbon(aes(y = mean, ymin = mean - sd, ymax = mean + sd, fill = type), alpha = .2) +
-  #scale_fill_manual(values=c('sandybrown','red2','red4','blue2','green4'))+
-  facet_wrap(~site)+
-  scale_y_continuous("Reflectance") +
-  scale_x_continuous("Wavelength (nm)",limits = c(300,2500), breaks = seq(350,2450,500)) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-  theme(text = element_text(size = 18))
-ggsave(paste(github_dir,'/figures/ALL_SITES_Full_Soil_Biocrusts_bySite.png',sep=''),dpi=300,width=220,height=120,units='mm')
-
+ggsave(paste(github_dir,'Campaign_2024/Figures/Level1_Field_Figures/IC3_Full_Soil_Biocrusts.png',sep=''),dpi=300,width=180,height=120,units='mm')
